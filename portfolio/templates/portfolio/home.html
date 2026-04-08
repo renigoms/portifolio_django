@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block header_title %} joão Silva {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'portfolio/css/home_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="perfil">
+        <img src="https://via.placeholder.com/180" alt="Foto do Aluno">
+        <h2>João da Silva</h2>
+        <p>Estudante de Sistemas de Informação - UAST/UFRPE</p>
+    </div>
+
+    <div class="secao">
+        <h3>Sobre Mim</h3>
+        <p> Olá! Sou estudante de Sistemas de Informação na UAST/UFRPE.
+        Tenho interesse em desenvolvimento web, ciência de dados e
+        inteligência artificial. Busco sempre aprender novas tecnologias
+        e contribuir com projetos open source.</p>
+    </div>
+
+    <div class="secao">
+        <h3>Dados Pessoais</h3>
+        <ul>
+            <li><strong>Nome:</strong> João da Silva</li>
+            <li><strong>Curso:</strong> Bacharelado em Sistemas de Informação</li>
+            <li><strong>Período:</strong> 5º</li>
+            <li><strong>E-mail:</strong> joao.silva@ufrpe.br</li>
+            <li><strong>GitHub:</strong> github.com/joaosilva</li>
+            <li><strong>LinkedIn:</strong> linkedin.com/in/joaosilva</li>
+        </ul>
+    </div>
+
+    <div class="secao">
+        <h3>Cursos e Certificados</h3>
+        <ul>
+            <li>Python para Data Science - Coursera (2025)</li>
+            <li>Django para Iniciantes - Udemy (2025)</li>
+            <li>Git e GitHub Essencial - DIO (2024)</li>
+            <li>Introdução ao Machine Learning - Stanford Online (2024)</li>
+        </ul>
+    </div>
+{% endblock %}

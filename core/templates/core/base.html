@@ -5,8 +5,30 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="{% static 'core/css/style.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <header>
+        <h1>
+            {% block header_title %}
+                Portifólio do Aluno
+            {% endblock %}
+        </h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'portfolio:home' %}">Início</a>
+        <a href="{% url 'portfolio:projetos' %}">Projetos</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+     <footer>
+        <p>© 2026 - Portfólio Acadêmico | UAST</p>
+    </footer>
+
 
 </body>
 </html>
