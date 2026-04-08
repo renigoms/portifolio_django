@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,10 +76,11 @@ WSGI_APPLICATION = 'projeto_portifolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio_db',
-        'USER': 'postgres',
-        'PASSWORD': 'rngazrcb',
-        'PORT': '5432',
+        'NAME': os.getenv('NAME', ""),
+        'USER': os.getenv('USER_DB', ""),
+        'PASSWORD': os.getenv('PASSWORD', ""),
+        'PORT': os.getenv('PORT', ""),
+        'HOST': os.getenv('HOST', ""),
     }
 }
 
