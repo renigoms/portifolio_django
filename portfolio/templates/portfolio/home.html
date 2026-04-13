@@ -1,7 +1,7 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-{% block header_title %} joão Silva {% endblock %}
+{% block header_title %} {{ profile.name.split.0 }} {{ profile.name.split.2 }}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'portfolio/css/home_styles.css' %}">
@@ -9,8 +9,8 @@
 
 {% block content %}
     <div class="perfil">
-        <img src="https://via.placeholder.com/180" alt="Foto do Aluno">
-        <h2>João da Silva</h2>
+        <img src="{{ profile.image_profile_url.url }}" alt="Foto do Aluno">
+        <h2>{{ profile.name }}</h2>
         <p>Estudante de Sistemas de Informação - UAST/UFRPE</p>
     </div>
 

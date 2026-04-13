@@ -10,5 +10,5 @@ class Profile(models.Model):
     course = models.CharField('Curso', max_length=100, blank=False, null=False)
     linken = models.CharField('Linken', max_length=100, blank=False, null=False)
     git = models.CharField('Git', max_length=100, blank=False, null=False)
-    image_profile_url = StdImageField('Foto de Perfil', upload_to='static/core/images', blank=True)
+    image_profile_url = StdImageField('Foto de Perfil', upload_to='images/profile/', variations={'thumb': (128, 128)})
     period = models.CharField('Periodo', max_length=100, blank=False, null=False)
