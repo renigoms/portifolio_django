@@ -13,4 +13,5 @@ def home(request):
 
 def projetos(request):
     projects: QuerySet[Project] = Project.objects.all()
-    return render(request, 'portfolio/projetos.html', {'projects': projects})
+    return render(request, 'portfolio/projetos.html',
+                  {'projects': projects, 'ProjectType': Project.ProjectTypeChoice})

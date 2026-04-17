@@ -10,44 +10,25 @@
 {% endblock %}
 
 {% block content %}
-    <div class="projeto-card">
-        <span class="tipo tipo-pessoal">Projeto Pessoal</span>
-        <h3>To-Do List em Django</h3>
-        <p>
-            Aplicação web para gerenciamento de tarefas pessoais, desenvolvida
-            com Django e Bootstrap. Possui autenticação de usuários e CRUD completo.
-        </p>
-        <a href="#">github.com/joaosilva/todo-django</a>
-    </div>
-
-    <div class="projeto-card">
-        <span class="tipo tipo-disciplina">Projeto de Disciplina</span>
-        <h3>Sistema de Enquetes (Polls)</h3>
-        <p>
-            Sistema de enquetes desenvolvido na disciplina de Programação Web,
-            seguindo o tutorial oficial do Django. Permite criar perguntas
-            e registrar votos.
-        </p>
-        <a href="#">github.com/joaosilva/django-polls</a>
-    </div>
-
-    <div class="projeto-card">
-        <span class="tipo tipo-pessoal">Projeto Pessoal</span>
-        <h3>API de Clima</h3>
-        <p>
-            API REST desenvolvida com Django REST Framework que consulta
-            dados climáticos e retorna previsões para cidades brasileiras.
-        </p>
-        <a href="#">github.com/joaosilva/clima-api</a>
-    </div>
-
-    <div class="projeto-card">
-        <span class="tipo tipo-disciplina">Projeto de Disciplina</span>
-        <h3>Dashboard de Vendas</h3>
-        <p>
-            Dashboard interativo para análise de dados de vendas,
-            desenvolvido na disciplina de Banco de Dados com Python e Pandas.
-        </p>
-        <a href="#">github.com/joaosilva/dashboard-vendas</a>
-    </div>
+    {% for project in projects %}
+        {% if project.project_type == ProjectType.SUBJECT %}
+            <div class="projeto-card">
+                <span class="tipo tipo-disciplina">Projeto de {{ project.project_type.title }}</span>
+                <h3>{{ project.name }}</h3>
+                <p>
+                    {{project.description }}
+                </p>
+                <a href="{{ project.git }}">{{ project.git }}</a>
+            </div>
+        {% else %}
+            <div class="projeto-card">
+                <span class="tipo tipo-pessoal">Projeto {{ project.project_type.title }}</span>
+               <h3>{{ project.name }}</h3>
+                <p>
+                    {{project.description }}
+                </p>
+                <a href="{{ project.git }}">{{ project.git }}</a>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
