@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+
+{% load bootstrap4 %}
+
+{% block extra_css %}
+    {% bootstrap_css %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h1>Contato</h1>
+        {% bootstrap_messages %}
+        <form action="{% url 'portfolio:contato' %}" method="post" class="form" autocomplete="off">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Enviar Mensagem
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+    {% bootstrap_javascript jquery='full'%}
+{% endblock %}
