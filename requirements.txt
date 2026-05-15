@@ -3,3 +3,5 @@ psycopg2-binary
 dotenv
 django-stdimage
 django-bootstrap4
+djangorestframework
+djangorestframework-simplejwt
