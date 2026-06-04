@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+
 
 class Task(models.Model):
     """
@@ -10,6 +12,16 @@ class Task(models.Model):
     description = models.TextField(blank=True)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    responsible = models.ForeignKey(
+        # Referencia ao user do django
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        # Permite acessar: user.tasks.all()
+        related_name='tasks',
+    )
 
     class Meta:
         ordering = ['-created_at']
