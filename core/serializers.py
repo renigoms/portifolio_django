@@ -11,9 +11,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
+            'period',
             'email',
             'image_profile_url',
             'course',
-            'linkend',
+            'linked',
             'git',
         ]

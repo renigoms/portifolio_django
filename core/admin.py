@@ -7,4 +7,4 @@ from core.models import Profile
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'description', 'period', 'course', 'linkend', 'git', 'image_profile_url']
+    list_display = ['name', 'email', 'description', 'period', 'course', 'linked', 'git', 'image_profile_url']

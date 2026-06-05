@@ -8,7 +8,7 @@ from core.serializers import ProfileSerializer
 # Create your views here.
 
 
-class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+class ProfileDetail(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
@@ -21,6 +21,5 @@ class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
             user=self.request.user,
             defaults={'name': self.request.user.username}
         )
-
         return profile
 

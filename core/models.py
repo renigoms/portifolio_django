@@ -14,13 +14,13 @@ class Profile(models.Model):
         blank=True
     )
 
-    image_profile_url = StdImageField('Foto de Perfil', upload_to='images/profile/', variations={'thumb': (128, 128)}, blank=True, null=True)
+    image_profile_url = models.URLField('Foto de Perfil', max_length=100, blank=True, null=True)
     name = models.CharField('Nome', max_length=100, blank=False, null=False)
     email = models.EmailField('E-mail', max_length=100, blank=False, null=False)
     description = models.CharField("Sobre Mim", max_length=255, blank=True, null=True)
     course = models.CharField('Curso', max_length=100, blank=False, null=False)
     period = models.CharField('Periodo', max_length=100, blank=False, null=False)
-    linkend = models.URLField('Linkend', max_length=100, blank=True, null=True)
+    linked = models.URLField('Linked', max_length=100, blank=True, null=True)
     git = models.URLField('Git', max_length=100, blank=True, null=True)
 
     class Meta:

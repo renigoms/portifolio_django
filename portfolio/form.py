@@ -6,10 +6,10 @@ from django import forms
 
 
 class ContactForm(forms.Form):
-    name = forms.CharField(label='Name', max_length=100)
-    email = forms.EmailField(label='Email', max_length=100)
-    subject = forms.CharField(label='Subject', max_length=120)
-    message = forms.CharField(label='Message', widget=forms.Textarea)
+    name = forms.CharField(label='Seu Nome', max_length=100)
+    email = forms.EmailField(label='Seu Email', max_length=100)
+    subject = forms.CharField(label='Assunto', max_length=120)
+    message = forms.CharField(label='Mensagem', widget=forms.Textarea)
 
     def send_email(self):
         name = self.cleaned_data['name']
