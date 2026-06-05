@@ -2,8 +2,11 @@ from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from core.models import Profile
+from core.serializers import ProfileSerializer
 from portfolio.form import ContactForm
 from portfolio.models import Certificate, Project
 
