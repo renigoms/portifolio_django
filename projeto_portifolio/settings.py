@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_procesors.notification_ms',
             ],
         },
     },
@@ -147,3 +148,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+# Microserviço de Notificação
+NOTIFICATION_MS_URL = 'http://127.0.0.1:8001'
+NOTIFICATION_MS_API_KEY = '01c6e54cfe0bcf47'

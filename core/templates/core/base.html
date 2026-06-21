@@ -8,28 +8,180 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
-        <h1>
-            {% block header_title %}
-                Portifólio do Aluno
-            {% endblock %}
-        </h1>
-    </header>
+<header>
+    <h1>
+        {% block header_title %}
+            Portifólio do Aluno
+        {% endblock %}
+    </h1>
+</header>
 
-    <nav>
-        <a href="{% url 'portfolio:home' %}">Início</a>
-        <a href="{% url 'portfolio:projetos' %}">Projetos</a>
-        <a href="{% url 'portfolio:contato' %}">Contato</a>
-    </nav>
+<nav>
+    <a href="{% url 'portfolio:home' %}">Início</a>
+    <a href="{% url 'portfolio:projetos' %}">Projetos</a>
+    <a href="{% url 'portfolio:contato' %}">Contato</a>
+    {#        Sino de notificações#}
+    {% if  user.is_authenticated %}
+        <div class="sino-container">
+            <button class="sino-btn" id="sino-btn" title="Notificacoes">
+                &#128276;
+                <span class="sino-badge sem-conexao" id="sino-badge">X</span>
+            </button>
+            <div class="notif-dropdown" id="notif-dropdown">
+                <div class="notif-dropdown-header">Notificações</div>
+                <div id="notif-lista">
+                    <div class="notif-vazio">Carregando...</div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</nav>
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 
-     <footer>
-        <p>© 2026 - Portfólio Acadêmico | UAST</p>
-    </footer>
+<footer>
+    <p>© 2026 - Portfólio Acadêmico | UAST</p>
+</footer>
 
+<!-- JavaScript do Sino de Notificacoes -->
+{% if user.is_authenticated %}
+    <script>
+        (function () {
+            // ─── Configuracoes vindas do Django (context processor) ───
+            var MS_URL = '{{ NOTIFICATION_MS_URL }}';
+            var API_KEY = '{{ NOTIFICATION_MS_API_KEY }}';
+            var USER_ID = '{{ NOTIFICATION_USER_ID }}';
 
+            // ─── Elementos do DOM ───
+            var sinoBtn = document.getElementById('sino-btn');
+            var sinoBadge = document.getElementById('sino-badge');
+            var dropdown = document.getElementById('notif-dropdown');
+            var notifLista = document.getElementById('notif-lista');
+
+            // ─── Headers padrao para todas as requisicoes ───
+            var headers = {
+                'X-Api-Key': API_KEY,
+                'X-User-Id': USER_ID,
+            };
+
+            // ─── Funcao: Buscar contagem de nao lidas ───
+            function buscarContagem() {
+                fetch(MS_URL + '/api/notificacoes/nao-lidas/', {headers: headers})
+                    .then(function (response) {
+                        if (!response.ok) throw new Error('Erro na API');
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        var count = data.count;
+
+                        // Remove classes anteriores
+                        sinoBadge.classList.remove('sem-conexao', 'sem-mensagens');
+
+                        if (count === 0) {
+                            sinoBadge.textContent = '0';
+                            sinoBadge.classList.add('sem-mensagens');
+                        } else {
+                            sinoBadge.textContent = count;
+                        }
+                    })
+                    .catch(function () {
+                        // Sem conexao com o microservico
+                        sinoBadge.textContent = 'X';
+                        sinoBadge.classList.remove('sem-mensagens');
+                        sinoBadge.classList.add('sem-conexao');
+                    });
+            }
+
+            // ─── Funcao: Buscar lista de notificacoes ───
+            function buscarNotificacoes() {
+                fetch(MS_URL + '/api/notificacoes/', {headers: headers})
+                    .then(function (response) {
+                        if (!response.ok) throw new Error('Erro na API');
+                        return response.json();
+                    })
+                    .then(function (notificacoes) {
+                        if (notificacoes.length === 0) {
+                            notifLista.innerHTML = '<div class="notif-vazio">Nenhuma notificacao.</div>';
+                            return;
+                        }
+
+                        var html = '';
+                        notificacoes.forEach(function (notif) {
+                            var classe = notif.is_read ? 'notif-item' : 'notif-item nao-lida';
+                            var data = new Date(notif.create_at).toLocaleString('pt-BR');
+
+                            html += '<div class="' + classe + '" data-id="' + notif.id + '">';
+                            html += '  <div class="notif-mensagem">' + notif.message + '</div>';
+                            html += '  <div class="notif-data">' + data + '</div>';
+                            html += '</div>';
+                        });
+
+                        notifLista.innerHTML = html;
+
+                        // Adicionar evento de click para marcar como lida
+                        var items = notifLista.querySelectorAll('.notif-item.nao-lida');
+                        items.forEach(function (item) {
+                            item.addEventListener('click', function () {
+                                var id = this.getAttribute('data-id');
+                                marcarComoLida(id, this);
+                            });
+                        });
+                    })
+                    .catch(function () {
+                        notifLista.innerHTML = '<div class="notif-vazio">Erro ao carregar notificacoes.</div>';
+                    });
+            }
+
+            // ─── Funcao: Marcar notificacao como lida ───
+            function marcarComoLida(id, elemento) {
+                fetch(MS_URL + '/api/notificacoes/' + id + '/lida/', {
+                    method: 'PATCH',
+                    headers: headers,
+                })
+                    .then(function (response) {
+                        if (!response.ok) throw new Error('Erro');
+                        return response.json();
+                    })
+                    .then(function () {
+                        // Remove o destaque visual
+                        elemento.classList.remove('nao-lida');
+                        // Atualiza a contagem
+                        buscarContagem();
+                    })
+                    .catch(function (erro) {
+                        console.error('Erro ao marcar como lida:', erro);
+                    });
+            }
+
+            // ─── Abrir/Fechar dropdown ───
+            sinoBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var aberto = dropdown.classList.contains('aberto');
+
+                if (aberto) {
+                    dropdown.classList.remove('aberto');
+                } else {
+                    dropdown.classList.add('aberto');
+                    buscarNotificacoes();
+                }
+            });
+
+            // Fechar dropdown ao clicar fora
+            document.addEventListener('click', function () {
+                dropdown.classList.remove('aberto');
+            });
+
+            dropdown.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+
+            // ─── Polling: buscar contagem a cada 5 segundos ───
+            buscarContagem();  // Primeira busca imediata
+            setInterval(buscarContagem, 5000);  // Depois, a cada 5 segundos
+        })();
+    </script>
+{% endif %}
 </body>
 </html>
