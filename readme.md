@@ -122,17 +122,17 @@ O microsserviço de noticações foi idealizado para enviar notificações ao po
         curl -X POST http://127.0.0.1:8001/api/notificacoes/criar/ \
              -H "X-Api-Key: SEU_HASH_AQUI" \
              -H "Content-Type: application/json" \
-             -d '{"user_id": 1, "mensagem": "Bem-vindo ao sistema de notificacoes!"}'
+             -d '{"user_id": 1,  "title": "Nova Notificação1", "message": "Bem-vindo ao sistema de notificacoes!"}'
         
         curl -X POST http://127.0.0.1:8001/api/notificacoes/criar/ \
              -H "X-Api-Key: SEU_HASH_AQUI" \
              -H "Content-Type: application/json" \
-             -d '{"user_id": 1, "mensagem": "Seu perfil foi atualizado com sucesso."}'
+             -d '{"user_id": 1,  "title": "Nova Notificação2", "message": "Seu perfil foi atualizado com sucesso."}'
         
         curl -X POST http://127.0.0.1:8001/api/notificacoes/criar/ \
              -H "X-Api-Key: SEU_HASH_AQUI" \
              -H "Content-Type: application/json" \
-             -d '{"user_id": 1, "mensagem": "Nova aula disponivel: Microservicos"}'
+             -d '{"user_id": 1,  "title": "Nova Notificação3", "message": "Nova aula disponivel: Microservicos"}'
     ```
 
 * **Testar leitura com curl**
@@ -163,7 +163,11 @@ O microsserviço de noticações foi idealizado para enviar notificações ao po
     curl -X POST http://127.0.0.1:8001/api/notificacoes/criar/ \
          -H "X-Api-Key: SEU_HASH_AQUI" \
          -H "Content-Type: application/json" \
-         -d '{"user_id": 1, "mensagem": "Voce tem uma nova tarefa pendente!"}'
+         -d '{
+                "user_id": 1, 
+                "title": "Nova Notificação", 
+                "message": "Voce tem uma nova tarefa pendente!"
+            }'
     ```
   
 * ``OBS: Todos os testes vistos aqui pode ser realizados na página admin do Django.``
