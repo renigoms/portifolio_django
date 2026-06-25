@@ -170,7 +170,7 @@ O microsserviço de noticações foi idealizado para enviar notificações ao po
             }'
     ```
   
-* ``OBS: Todos os testes vistos aqui pode ser realizados na página admin do Django.``
+* ``OBS: Todos os testes vistos aqui podem ser realizados na página admin do Django.``
    
 
 
