@@ -78,7 +78,7 @@ O microsserviço de noticações foi idealizado para enviar notificações ao po
 - Python v3+
 
 ### Fazer o clone:
-    git clone git@github.com:renigoms/portifolio_django.git
+    git clone git@github.com:renigoms/notifications_ms.git
 
 ### Gerar o venv:
 
