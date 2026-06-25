@@ -28,7 +28,10 @@
                 <span class="sino-badge sem-conexao" id="sino-badge">X</span>
             </button>
             <div class="notif-dropdown" id="notif-dropdown">
-                <div class="notif-dropdown-header">Notificações</div>
+                <div class="notif-dropdown-header">
+                    <span>Notificações</span>
+                    <button id="marcar-todas-lidas-btn" class="marcar-todas-btn" style="display: none;">Marcar todas como lidas</button>
+                </div>
                 <div id="notif-lista">
                     <div class="notif-vazio">Carregando...</div>
                 </div>
@@ -59,6 +62,7 @@
             var sinoBadge = document.getElementById('sino-badge');
             var dropdown = document.getElementById('notif-dropdown');
             var notifLista = document.getElementById('notif-lista');
+            var marcarTodasBtn = document.getElementById('marcar-todas-lidas-btn');
 
             // ─── Headers padrao para todas as requisicoes ───
             var headers = {
@@ -82,8 +86,10 @@
                         if (count === 0) {
                             sinoBadge.textContent = '0';
                             sinoBadge.classList.add('sem-mensagens');
+                            if (marcarTodasBtn) marcarTodasBtn.style.display = 'none';
                         } else {
                             sinoBadge.textContent = count;
+                            if (marcarTodasBtn) marcarTodasBtn.style.display = 'inline-block';
                         }
                     })
                     .catch(function () {
@@ -91,6 +97,7 @@
                         sinoBadge.textContent = 'X';
                         sinoBadge.classList.remove('sem-mensagens');
                         sinoBadge.classList.add('sem-conexao');
+                        if (marcarTodasBtn) marcarTodasBtn.style.display = 'none';
                     });
             }
 
@@ -107,16 +114,20 @@
                             return;
                         }
 
-                        var html = '';
-                        notificacoes.forEach(function (notif) {
-                            var classe = notif.is_read ? 'notif-item' : 'notif-item nao-lida';
-                            var data = new Date(notif.create_at).toLocaleString('pt-BR');
+                         var html = '';
+                            notificacoes.forEach(function (notif) {
+                                var classe = notif.is_read ? 'notif-item' : 'notif-item nao-lida';
+                                var data = new Date(notif.create_at).toLocaleString('pt-BR');
 
-                            html += '<div class="' + classe + '" data-id="' + notif.id + '">';
-                            html += '  <div class="notif-mensagem">' + notif.message + '</div>';
-                            html += '  <div class="notif-data">' + data + '</div>';
-                            html += '</div>';
-                        });
+                                // Se a notificação tiver título, exibimos
+                                var tituloHtml = notif.title ? '<div class="notif-titulo">' + notif.title + '</div>' : '';
+
+                                html += '<div class="' + classe + '" data-id="' + notif.id + '">';
+                                html += '  ' + tituloHtml; // <-- Título exibido no topo do item
+                                html += '  <div class="notif-mensagem">' + notif.message + '</div>';
+                                html += '  <div class="notif-data">' + data + '</div>';
+                                html += '</div>';
+                            });
 
                         notifLista.innerHTML = html;
 
@@ -153,6 +164,32 @@
                     .catch(function (erro) {
                         console.error('Erro ao marcar como lida:', erro);
                     });
+            }
+
+            // ─── Funcao: Marcar todas as notificacoes como lidas ───
+            function marcarTodasComoLidas() {
+                fetch(MS_URL + '/api/notificacoes/marcar-todas-lidas/', {
+                    method: 'PATCH',
+                    headers: headers,
+                })
+                    .then(function (response) {
+                        if (!response.ok) throw new Error('Erro');
+                        return response.json();
+                    })
+                    .then(function () {
+                        buscarNotificacoes();
+                        buscarContagem();
+                    })
+                    .catch(function (erro) {
+                        console.error('Erro ao marcar todas como lidas:', erro);
+                    });
+            }
+
+            if (marcarTodasBtn) {
+                marcarTodasBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    marcarTodasComoLidas();
+                });
             }
 
             // ─── Abrir/Fechar dropdown ───

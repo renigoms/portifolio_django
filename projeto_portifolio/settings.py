@@ -150,4 +150,4 @@ SIMPLE_JWT = {
 
 # Microserviço de Notificação
 NOTIFICATION_MS_URL = 'http://127.0.0.1:8001'
-NOTIFICATION_MS_API_KEY = '01c6e54cfe0bcf47'
+NOTIFICATION_MS_API_KEY = os.getenv("HASH", "")
